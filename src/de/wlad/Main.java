@@ -1,17 +1,18 @@
 package de.wlad;
 
-import de.wlad.stages.BildErfassungView;
+import de.wlad.stages.MainView;
 import javafx.application.Application;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 	
 	@Override
 	public void start(Stage stage) {
+		MainView mv = new MainView(stage);
+		mv.showView();
 		stage.show();
 		
-		new BildErfassungView(new Bild(), stage).showView();
+		//new BildErfassungView(new Bild(), stage).showView();
 	}
 
 	public static void main(String[] args) {

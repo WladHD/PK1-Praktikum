@@ -2,6 +2,7 @@ package de.wlad;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Formatter;
 import java.util.Objects;
 
 public class Audio extends Medium {
@@ -14,19 +15,39 @@ public class Audio extends Medium {
 		this.interpret = interpret;
 		this.dauer = dauer;
 	}
+	
+	public Audio() {
+	}
 
 	public String getInterpret() {
 		return interpret;
+	}
+	
+	public void setInterpret(String interpret) {
+		this.interpret = interpret;
 	}
 
 	public int getDauer() {
 		return dauer;
 	}
+	
+	public void setDauer(int dauer) {
+		this.dauer = dauer;
+	}
 
 	@Override
 	public void druckeDaten(OutputStream os) {
-		new PrintStream(os).printf("ID = %d \"%s\" von %s aus %d Spieldauer: %d sek.%n", getId(), getTitel(), getInterpret(),
-				getJahr(), getDauer());
+		new PrintStream(os).print(toString());
+	}
+
+	@Override
+	public String toString() {
+		Formatter f = new Formatter();
+		f.format("ID = %d \"%s\" von %s aus %d Spieldauer: %d sek.%n", getId(), getTitel(), getInterpret(), getJahr(),
+				getDauer());
+		String s = f.toString();
+		f.close();
+		return s;
 	}
 
 	@Override

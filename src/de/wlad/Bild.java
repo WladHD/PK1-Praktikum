@@ -2,6 +2,7 @@ package de.wlad;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Formatter;
 import java.util.Objects;
 
 public class Bild extends Medium {
@@ -12,15 +13,30 @@ public class Bild extends Medium {
 		super(titel, jahr);
 		this.ort = ort;
 	}
-
+	
+	public Bild() {
+	}
+	
 	public String getOrt() {
 		return ort;
+	}
+	
+	public void setOrt(String ort) {
+		this.ort = ort;
 	}
 
 	@Override
 	public void druckeDaten(OutputStream os) {
-		new PrintStream(os).printf("ID = %d \"%s\" aufgenommen im Jahr %d in %s%n", getId(), getTitel(), getJahr(),
-				getOrt());
+		new PrintStream(os).print(toString());
+	}
+
+	@Override
+	public String toString() {
+		Formatter f = new Formatter();
+		f.format("ID = %d \"%s\" aufgenommen im Jahr %d in %s%n", getId(), getTitel(), getJahr(), getOrt());
+		String s = f.toString();
+		f.close();
+		return s;
 	}
 
 	@Override

@@ -2,6 +2,7 @@ package de.wlad;
 
 import de.wlad.stages.BildErfassungView;
 import javafx.application.Application;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -10,7 +11,7 @@ public class Main extends Application {
 	public void start(Stage stage) {
 		stage.show();
 		
-		new BildErfassungView(null, stage).showView();
+		new BildErfassungView(new Bild(), stage).showView();
 	}
 
 	public static void main(String[] args) {

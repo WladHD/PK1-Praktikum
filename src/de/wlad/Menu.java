@@ -195,7 +195,7 @@ public class Menu {
 		}
 	}
 
-	public boolean contains(int[] arr, int needle) {
+	public static boolean contains(int[] arr, int needle) {
 		for (int i : arr)
 			if (needle == i)
 				return true;

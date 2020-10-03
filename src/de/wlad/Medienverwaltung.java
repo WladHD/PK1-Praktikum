@@ -3,11 +3,16 @@ package de.wlad;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 public class Medienverwaltung {
 	private List<Medium> medien = new ArrayList<>();
 
+	public Iterator<Medium> iterator() {
+		return medien.iterator();
+	}
+	
 	public void aufnehmen(Medium m) {
 		medien.add(m);
 		System.out.println("Medium aufgenommen: " + medien.size());
@@ -25,8 +30,16 @@ public class Medienverwaltung {
 	}
 
 	public void setMediumList(List<Medium> list) {
-		if (list != null)
-			medien = list;
+		if (list == null)
+			return;
+		medien = list;
+
+		if (list.size() == 0)
+			return;
+
+		// Nachträglich hinzugefügt, da bei Deserialisierung statische Variablen nicht
+		// übernommen werden
+		Medium.setGlobalId(list.stream().map(i -> i.getId()).max(Integer::compare).get() + 1);
 	}
 
 	public Medium sucheNeuesMedium() {

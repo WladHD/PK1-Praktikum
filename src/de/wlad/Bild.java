@@ -6,7 +6,7 @@ import java.util.Formatter;
 import java.util.Objects;
 
 public class Bild extends Medium {
-	private static final long serialVersionUID = 6911841357496061384L;
+	private static final long serialVersionUID = -6526508329165102843L;
 	private String ort;
 
 	public Bild(String titel, int jahr, String ort) {

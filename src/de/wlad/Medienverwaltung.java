@@ -6,16 +6,38 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
+import de.wlad.stages.MainView;
+
 public class Medienverwaltung {
+	
+	private static Medienverwaltung instance = new Medienverwaltung();
+	
+	public static Medienverwaltung getInstance() {
+		return instance;
+	}
+	
+	private Medienverwaltung() {
+		
+	}
+	
 	private List<Medium> medien = new ArrayList<>();
 
 	public Iterator<Medium> iterator() {
 		return medien.iterator();
 	}
-	
+
+	public void updateList(Medium m) {
+		if (m != null)
+			MainView.getContentList().add(m.toString());
+		else {
+			MainView.getContentList().clear();
+			medien.stream().map(medium -> medium.toString()).forEach(MainView.getContentList()::add);
+		}
+	}
+
 	public void aufnehmen(Medium m) {
 		medien.add(m);
-		System.out.println("Medium aufgenommen: " + medien.size());
+		updateList(m);
 	}
 
 	public void zeigeMedien(OutputStream os) {
@@ -33,13 +55,11 @@ public class Medienverwaltung {
 		if (list == null)
 			return;
 		medien = list;
-
-		if (list.size() == 0)
-			return;
+		updateList(null);
 
 		// Nachträglich hinzugefügt, da bei Deserialisierung statische Variablen nicht
 		// übernommen werden
-		Medium.setGlobalId(list.stream().map(i -> i.getId()).max(Integer::compare).get() + 1);
+		Medium.setGlobalId(list.size() == 0 ? 0 : list.stream().map(i -> i.getId()).max(Integer::compare).get() + 1);
 	}
 
 	public Medium sucheNeuesMedium() {
@@ -49,10 +69,10 @@ public class Medienverwaltung {
 	}
 
 	public double berechneErscheinungsjahr() {
-		final double size = medien.size();
-		if (size == 0d)
-			return 0d;
-		return medien.stream().map(m -> m.alter() / size).reduce(0d, (a, b) -> a + b);
+		final int size = medien.size();
+		if (size == 0)
+			return 0;
+		return medien.stream().map(m -> (double) m.getJahr() / size).reduce(0d, (a, b) -> a + b);
 	}
 
 }

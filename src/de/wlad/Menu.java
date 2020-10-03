@@ -1,14 +1,9 @@
 package de.wlad;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.util.Scanner;
-
-import javax.swing.JOptionPane;
-
+@Deprecated
 public class Menu {
-	private Scanner sc = new Scanner(System.in);
-	private Medienverwaltung mv = new Medienverwaltung();
+/*	private Scanner sc = new Scanner(System.in);
+	private Medienverwaltung mv = Medienverwaltung.getInstance();
 	private static int menuOptionIndexCounter = 1;
 
 	public enum MenuOption {
@@ -121,7 +116,7 @@ public class Menu {
 			System.out.println("Aufnahme abgebrochen.");
 		} catch (EmptyFilenameException e) {
 			if (JOptionPane.showConfirmDialog(null, "Der Dateiname darf nicht leer sein. Wiederholen?") == 0)
-				startListening(e.getMenuOption().getId());
+				//startListening(e.getMenuOption().getId());
 		}
 
 		startListening();
@@ -193,14 +188,6 @@ public class Menu {
 
 			temp[i] = o;
 		}
-	}
-
-	public static boolean contains(int[] arr, int needle) {
-		for (int i : arr)
-			if (needle == i)
-				return true;
-
-		return false;
-	}
+	}*/
 
 }

@@ -2,7 +2,6 @@ package de.wlad.stages.utils;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -23,10 +22,6 @@ public class InputNode {
 				state[i] = "";
 			grid.addRow(i + 1, new Label(temp[i].toString()), new TextField(state[i].toString()));
 		}
-		
-		for(Node c : grid.getChildren()) {
-			System.out.println("G: " + c.toString());
-		}
 
 		Button bNeu = new Button("Neu");
 		Button bAbbrechen = new Button("Abbrechen");
@@ -38,11 +33,6 @@ public class InputNode {
 		bp.setCenter(grid);
 		bp.setBottom(hb);
 		bp.setPadding(new Insets(10.0));
-		
-		for(Node c : hb.getChildren())
-			System.out.println("HB: " + c.toString());
-		
-		System.out.println("BP: " + bp.getCenter().toString());
 
 		return bp;
 	}

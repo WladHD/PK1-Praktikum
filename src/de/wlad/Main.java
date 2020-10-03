@@ -11,13 +11,10 @@ public class Main extends Application {
 		MainView mv = new MainView(stage);
 		mv.showView();
 		stage.show();
-		
-		//new BildErfassungView(new Bild(), stage).showView();
 	}
 
 	public static void main(String[] args) {
 		launch();
-		new Menu();//.startListening();
 	}
 
 	public class PraktikumBasics {
@@ -53,7 +50,7 @@ public class Main extends Application {
 	}
 
 	public class Praktikum2 extends PraktikumBasics {
-		Medienverwaltung mv = new Medienverwaltung();
+		Medienverwaltung mv = Medienverwaltung.getInstance();
 
 		public void p2aufgabe2() {
 			for (Medium m : list)
@@ -65,6 +62,14 @@ public class Main extends Application {
 			if (m != null)
 				m.druckeDaten(System.out);
 		}
+	}
+	
+	public static boolean contains(int[] arr, int needle) {
+		for (int i : arr)
+			if (needle == i)
+				return true;
+
+		return false;
 	}
 
 }

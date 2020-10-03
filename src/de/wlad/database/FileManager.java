@@ -1,4 +1,4 @@
-package de.wlad;
+package de.wlad.database;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -10,7 +10,23 @@ import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
 import java.util.List;
 
-public class FileManager {
+import de.wlad.Medium;
+import de.wlad.exceptions.PersistenzException;
+
+public class FileManager implements IDao {
+
+	private File database = new File("C:\\Users\\wladh\\Desktop\\pk1database.dtb");
+
+	@Override
+	public void speichern(List<Medium> liste) throws PersistenzException {
+		serialize(database, liste);
+	}
+
+	@Override
+	public List<Medium> laden() throws PersistenzException {
+		return deserialize(database);
+	}
+
 	public static void serialize(File to, List<Medium> list) {
 		try (FileOutputStream fos = new FileOutputStream(to); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
 			oos.writeObject(list);

@@ -1,4 +1,4 @@
-package de.wlad;
+package de.wlad.exceptions;
 
 public class InputAbortException extends Exception {
 

@@ -1,6 +1,7 @@
 package de.wlad.stages;
 
 import de.wlad.Bild;
+import de.wlad.Medienverwaltung;
 import de.wlad.stages.utils.EventHandlerHelper;
 import de.wlad.stages.utils.InputNode;
 import javafx.scene.Scene;
@@ -39,6 +40,7 @@ public class BildErfassungView extends Stage implements EventHandlerHelper {
 		bild.setTitel((String) temp[0]);
 		bild.setJahr((int) temp[1]);
 		bild.setOrt((String) temp[2]);
+		Medienverwaltung.getInstance().aufnehmen(bild);
 	}
 
 	@Override

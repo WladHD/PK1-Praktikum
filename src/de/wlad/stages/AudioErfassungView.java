@@ -1,6 +1,7 @@
 package de.wlad.stages;
 
 import de.wlad.Audio;
+import de.wlad.Medienverwaltung;
 import de.wlad.stages.utils.EventHandlerHelper;
 import de.wlad.stages.utils.InputNode;
 import javafx.scene.Scene;
@@ -36,6 +37,7 @@ public class AudioErfassungView extends Stage implements EventHandlerHelper {
 		audio.setJahr((int) temp[1]);
 		audio.setInterpret((String) temp[2]);
 		audio.setDauer((int) temp[3]);
+		Medienverwaltung.getInstance().aufnehmen(audio);
 	}
 
 	@Override

@@ -1,7 +1,8 @@
 package de.wlad.stages.events;
 
-import de.wlad.Menu;
+import de.wlad.Main;
 import de.wlad.stages.utils.EventHandlerHelper;
+import de.wlad.stages.utils.OutputHelper;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -37,17 +38,18 @@ public class InputCompletedEvent implements EventHandler<ActionEvent> {
 
 					temp[i] = tf.getText();
 
-					if (Menu.contains(helper.getIndexes(), i)) {
+					if (Main.contains(helper.getIndexes(), i)) {
 						try {
 							temp[i] = Integer.parseInt(tf.getText());
 						} catch (Exception ex) {
+							OutputHelper.wrongInput();
 							return;
 						}
 					}
 					i++;
 				}
 			}
-			break;
+			helper.onInputSuccessfull();
 		default:
 			helper.goToMainView();
 		}

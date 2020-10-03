@@ -32,60 +32,81 @@ public class Menu {
 			return;
 		}
 
-		switch (parsed) {
-		case 1:
-			aufnehmenAudio();
-			break;
-		case 2:
-			aufnehmenBild();
-			break;
-		case 3:
-			mv.zeigeMedien();
-			break;
-		case 4:
-			System.out.print("Neustes Medium: ");
-			Medium m = mv.sucheNeuesMedium();
-			if (m == null) {
-				System.out.println("-");
+		try {
+			switch (parsed) {
+			case 1:
+				aufnehmenAudio();
+				break;
+			case 2:
+				aufnehmenBild();
+				break;
+			case 3:
+				mv.zeigeMedien();
+				break;
+			case 4:
+				System.out.print("Neustes Medium: ");
+				Medium m = mv.sucheNeuesMedium();
+				if (m == null) {
+					System.out.println("-");
+					break;
+				}
+				m.druckeDaten();
+				break;
+			case 5:
+				System.out.printf("Durchschnittliches Alter: %.1f%nNeustes Medium: ", mv.berechneErscheinungsjahr());
+				break;
+			case 6:
+				return;
+			default:
+				System.out.println("Ungültige Eingabe.");
 				break;
 			}
-			m.druckeDaten();
-			break;
-		case 5:
-			System.out.printf("Durchschnittliches Alter: %.1f%nNeustes Medium: ", mv.berechneErscheinungsjahr());
-			break;
-		case 6:
-			return;
-		default:
-			System.out.println("Ungültige Eingabe.");
-			break;
+		} catch (InputAbortException e) {
+			System.out.println("Aufnahme abgebrochen.");
 		}
 
 		startListening();
 	}
 
-	public void aufnehmenAudio() {
+	public void aufnehmenAudio() throws InputAbortException {
 		Object[] temp = { "Titel", "Jahr", "Interpreten", "Dauer" };
 		aufnehmen(temp, 1, 3);
-		mv.aufnehmen(new Audio(temp[0].toString(), (int) temp[1], temp[2].toString(), (int) temp[3]));
+		mv.aufnehmen(new Audio((String) temp[0], (int) temp[1], (String) temp[2], (int) temp[3]));
 	}
-	
-	public void aufnehmenBild() {
+
+	public void aufnehmenBild() throws InputAbortException {
 		Object[] temp = { "Titel", "Jahr", "Ort" };
 		aufnehmen(temp, 1);
-		mv.aufnehmen(new Bild(temp[0].toString(), (int) temp[1], temp[2].toString()));
-	}
-	
-	public void aufnehmen(Object[] temp, int... indexes) {
-		for (int i = 0; i < temp.length; i++)
-			temp[i] = JOptionPane.showInputDialog(null, temp[i] + " eingeben.");
-
-		parseIntegerInArray(temp, indexes);
+		mv.aufnehmen(new Bild((String) temp[0], (int) temp[1], (String) temp[2]));
 	}
 
-	public void parseIntegerInArray(Object[] arr, int... indexes) {
-		for (int i : indexes)
-			arr[i] = Integer.parseInt(arr[i].toString());
+	public void aufnehmen(Object[] temp, int... indexes) throws InputAbortException {
+		for (int i = 0; i < temp.length; i++) {
+			Object o = JOptionPane.showInputDialog(null, temp[i] + " eingeben.");
+
+			if (o == null)
+				throw new InputAbortException();
+
+			if (contains(indexes, i)) {
+				try {
+					o = Integer.parseInt((String) o);
+				} catch (Exception e) {
+					JOptionPane.showMessageDialog(null, "Bitte gültige Zahl für " + temp[i] + " eingeben.");
+					i--;
+					continue;
+				}
+			}
+
+			temp[i] = o;
+		}
+	}
+
+	public boolean contains(int[] arr, int needle) {
+		for (int i : arr)
+			if (needle == i)
+				return true;
+
+		return false;
 	}
 
 }

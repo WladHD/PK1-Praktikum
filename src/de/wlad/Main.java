@@ -1,9 +1,12 @@
 package de.wlad;
 
+import java.io.File;
+
 public class Main {
 
 	public static void main(String[] args) {
-		new Menu().startListening();
+		FileManager.cat(new File("C:\\Users\\wladh\\Desktop\\Test.txt"));
+		//new Menu().startListening();
 	}
 
 	public class PraktikumBasics {

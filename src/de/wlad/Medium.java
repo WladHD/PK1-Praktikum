@@ -1,10 +1,12 @@
 package de.wlad;
 
 import java.io.OutputStream;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public abstract class Medium implements Comparable<Medium> {
+public abstract class Medium implements Comparable<Medium>, Serializable {
+	private static final long serialVersionUID = -5733835028084439147L;
 	private static int globalId = 0;
 	private int id;
 	private String titel;

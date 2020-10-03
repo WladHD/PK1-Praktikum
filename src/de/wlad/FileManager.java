@@ -5,9 +5,31 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.RandomAccessFile;
+import java.util.List;
 
 public class FileManager {
+	public static void serialize(File to, List<Medium> list) {
+		try (FileOutputStream fos = new FileOutputStream(to); ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+			oos.writeObject(list);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static List<Medium> deserialize(File from) {
+		try (FileInputStream fis = new FileInputStream(from); ObjectInputStream ois = new ObjectInputStream(fis)) {
+			return (List<Medium>) ois.readObject();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
 	public static void copy(File from, File to) {
 		FileInputStream fis = null;
 		FileOutputStream fos = null;

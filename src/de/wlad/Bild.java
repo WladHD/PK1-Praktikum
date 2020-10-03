@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.util.Objects;
 
 public class Bild extends Medium {
+	private static final long serialVersionUID = 6911841357496061384L;
 	private String ort;
 
 	public Bild(String titel, int jahr, String ort) {

@@ -5,6 +5,7 @@ import java.io.PrintStream;
 import java.util.Objects;
 
 public class Audio extends Medium {
+	private static final long serialVersionUID = -60483306758186474L;
 	private String interpret;
 	private int dauer;
 

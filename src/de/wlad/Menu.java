@@ -7,18 +7,53 @@ import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 public class Menu {
-
-	private String[] options = { "Audio aufnehmen", "Bild aufnehmen", "Zeige alle Medien",
-			"Medienliste in Datei schreiben", "Zeige neues Medium", "Berechne durchschnittliches Erscheinungsjahr",
-			"Beenden" };
 	private Scanner sc = new Scanner(System.in);
 	private Medienverwaltung mv = new Medienverwaltung();
+	private static int menuOptionIndexCounter = 1;
+
+	public enum MenuOption {
+		AUDIO_AUFNEHMEN("Audio aufnehmen"), BILD_AUFNEHMEN("Bild aufnehmen"),
+		ALLE_MEDIEN_IN_KONSOLE("Zeige alle Medien"), ALLE_MEDIEN_IN_DATEI("Medienliste in Datei schreiben"),
+		ZEIGE_NEUES_MEDIUM("Zeige neues Medium"),
+		ZEIGE_DURCHSCHNITTLICHES_ERSCHEINUNGSJAHR("Berechne durchschnittliches Erscheinungsjahr"),
+		SPEICHERN("Speichern"), LADEN("Laden"), BEENDEN("Beenden");
+
+		private final int i;
+		private final String msg;
+
+		MenuOption(String msg) {
+			this.i = Menu.menuOptionIndexCounter++;
+			this.msg = msg;
+		}
+
+		public final int getId() {
+			return i;
+		}
+
+		public final String getMessage() {
+			return msg;
+		}
+
+		public static MenuOption[] getOptions() {
+			return values();
+		}
+
+		public static MenuOption parseById(int id) {
+			for (MenuOption m : getOptions())
+				if (m.getId() == id)
+					return m;
+
+			return null;
+		}
+	}
 
 	public void printMenu() {
 		System.out.println("Medienverwaltung\n");
 
+		MenuOption[] options = MenuOption.getOptions();
+
 		for (int i = 0; i < options.length; i++)
-			System.out.printf("%d. %s%n", i + 1, options[i]);
+			System.out.printf("%d. %s%n", options[i].getId(), options[i].getMessage());
 
 		System.out.print("\nBitte Menuepunkt waehlen: ");
 	}
@@ -42,21 +77,23 @@ public class Menu {
 			}
 		}
 
+		MenuOption mo = MenuOption.parseById(parsed);
+
 		try {
-			switch (parsed) {
-			case 1:
+			switch (mo) {
+			case AUDIO_AUFNEHMEN:
 				aufnehmenAudio();
 				break;
-			case 2:
+			case BILD_AUFNEHMEN:
 				aufnehmenBild();
 				break;
-			case 3:
+			case ALLE_MEDIEN_IN_KONSOLE:
 				mv.zeigeMedien(System.out);
 				break;
-			case 4:
+			case ALLE_MEDIEN_IN_DATEI:
 				druckeDatenInDatei();
 				break;
-			case 5:
+			case ZEIGE_NEUES_MEDIUM:
 				System.out.print("Neustes Medium: ");
 				Medium m = mv.sucheNeuesMedium();
 				if (m == null) {
@@ -65,11 +102,17 @@ public class Menu {
 				}
 				m.druckeDaten(System.out);
 				break;
-			case 6:
+			case ZEIGE_DURCHSCHNITTLICHES_ERSCHEINUNGSJAHR:
 				System.out.printf("Durchschnittliches Alter: %.1f%nNeustes Medium: ", mv.berechneErscheinungsjahr());
 				break;
-			case 7:
+			case BEENDEN:
 				return;
+			case SPEICHERN:
+				listeSpeichern();
+				break;
+			case LADEN:
+				listeLaden();
+				break;
 			default:
 				System.out.println("Ungültige Eingabe.");
 				break;
@@ -78,33 +121,45 @@ public class Menu {
 			System.out.println("Aufnahme abgebrochen.");
 		} catch (EmptyFilenameException e) {
 			if (JOptionPane.showConfirmDialog(null, "Der Dateiname darf nicht leer sein. Wiederholen?") == 0)
-				startListening(4);
+				startListening(e.getMenuOption().getId());
 		}
 
 		startListening();
 	}
 
+	public void listeSpeichern() throws InputAbortException, EmptyFilenameException {
+		FileManager.serialize(new File(parsePath(MenuOption.SPEICHERN)), mv.getMediumList());
+	}
+
+	public void listeLaden() throws InputAbortException, EmptyFilenameException {
+		mv.setMediumList(FileManager.deserialize(new File(parsePath(MenuOption.LADEN))));
+	}
+
 	public void druckeDatenInDatei() throws InputAbortException, EmptyFilenameException {
-		String s = JOptionPane.showInputDialog("Dateipfad eingeben.");
-
-		if (s == null)
-			throw new InputAbortException();
-
-		if (s.replaceAll(" ", "").length() == 0)
-			throw new EmptyFilenameException();
-
-		File f = new File(s);
+		File f = new File(parsePath(MenuOption.ALLE_MEDIEN_IN_DATEI));
 
 		if (!f.isFile()) {
 			druckeDatenInDatei();
 			return;
 		}
 
-		try (FileOutputStream fos = new FileOutputStream(new File(s))) {
+		try (FileOutputStream fos = new FileOutputStream(f)) {
 			mv.zeigeMedien(fos);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String parsePath(MenuOption mo) throws InputAbortException, EmptyFilenameException {
+		String s = JOptionPane.showInputDialog("Dateipfad eingeben.");
+
+		if (s == null)
+			throw new InputAbortException();
+
+		if (s.replaceAll(" ", "").length() == 0)
+			throw new EmptyFilenameException(mo);
+
+		return s;
 	}
 
 	public void aufnehmenAudio() throws InputAbortException {

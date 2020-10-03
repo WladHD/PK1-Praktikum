@@ -15,13 +15,23 @@ public class Medienverwaltung {
 
 	public void zeigeMedien(OutputStream os) {
 		Collections.sort(medien);
-		
+
 		for (Medium m : medien)
 			m.druckeDaten(os);
 	}
 
+	public List<Medium> getMediumList() {
+		return medien;
+	}
+
+	public void setMediumList(List<Medium> list) {
+		if (list != null)
+			medien = list;
+	}
+
 	public Medium sucheNeuesMedium() {
-		if(medien.size() == 0) return null;
+		if (medien.size() == 0)
+			return null;
 		return medien.stream().min((a, b) -> a.alter() - b.alter()).get();
 	}
 

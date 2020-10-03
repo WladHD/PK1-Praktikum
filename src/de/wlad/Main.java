@@ -2,15 +2,18 @@ package de.wlad;
 
 public class Main {
 
-	private static Medium[] list = { new Audio("It Means Nothing", 2007, "Stereophonics", 229),
-			new Bild("Gebaeude FB Informatik", 2019, "Dortmund"), new Bild("Gebaeude FB Informatik", 2019, "Dortmund"),
-			new Audio("Cry Me A River", 2018, "Dortmund", 123) };
-
 	public static void main(String[] args) {
-		new Main().new Praktikum2().p2aufgabe2();
+		new Menu().startListening();
 	}
 
-	public class Praktikum1 {
+	public class PraktikumBasics {
+		public Medium[] list = { new Audio("It Means Nothing", 2007, "Stereophonics", 229),
+				new Bild("Gebaeude FB Informatik", 2019, "Dortmund"),
+				new Bild("Gebaeude FB Informatik", 2019, "Dortmund"),
+				new Audio("Cry Me A River", 2018, "Dortmund", 123) };
+	}
+
+	public class Praktikum1 extends PraktikumBasics {
 		public void p1aufgabe3() {
 			for (Medium m : list)
 				m.druckeDaten();
@@ -35,7 +38,7 @@ public class Main {
 		}
 	}
 
-	public class Praktikum2 {
+	public class Praktikum2 extends PraktikumBasics {
 		Medienverwaltung mv = new Medienverwaltung();
 
 		public void p2aufgabe2() {
@@ -49,4 +52,5 @@ public class Main {
 				m.druckeDaten();
 		}
 	}
+
 }

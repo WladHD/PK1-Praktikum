@@ -3,7 +3,7 @@ package de.wlad;
 import java.time.LocalDate;
 import java.util.Objects;
 
-public abstract class Medium {
+public abstract class Medium implements Comparable<Medium> {
 	private static int globalId = 0;
 	private int id;
 	private String titel;
@@ -41,5 +41,10 @@ public abstract class Medium {
 	@Override
 	public boolean equals(Object o) {
 		return hashCode() == o.hashCode();
+	}
+	
+	@Override
+	public int compareTo(Medium m) {
+		return getJahr() - m.getJahr();
 	}
 }

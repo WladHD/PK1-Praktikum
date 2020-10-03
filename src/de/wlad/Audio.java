@@ -1,5 +1,7 @@
 package de.wlad;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Objects;
 
 public class Audio extends Medium {
@@ -21,8 +23,8 @@ public class Audio extends Medium {
 	}
 
 	@Override
-	public void druckeDaten() {
-		System.out.printf("ID = %d \"%s\" von %s aus %d Spieldauer: %d sek.%n", getId(), getTitel(), getInterpret(),
+	public void druckeDaten(OutputStream os) {
+		new PrintStream(os).printf("ID = %d \"%s\" von %s aus %d Spieldauer: %d sek.%n", getId(), getTitel(), getInterpret(),
 				getJahr(), getDauer());
 	}
 

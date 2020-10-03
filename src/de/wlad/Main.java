@@ -1,12 +1,9 @@
 package de.wlad;
 
-import java.io.File;
-
 public class Main {
 
 	public static void main(String[] args) {
-		FileManager.cat(new File("C:\\Users\\wladh\\Desktop\\Test.txt"));
-		//new Menu().startListening();
+		new Menu().startListening();
 	}
 
 	public class PraktikumBasics {
@@ -19,7 +16,7 @@ public class Main {
 	public class Praktikum1 extends PraktikumBasics {
 		public void p1aufgabe3() {
 			for (Medium m : list)
-				m.druckeDaten();
+				m.druckeDaten(System.out);
 
 			System.out.printf("\"%s\" ist %d Jahre alt%n", list[0].getTitel(), list[0].alter());
 
@@ -48,11 +45,11 @@ public class Main {
 			for (Medium m : list)
 				mv.aufnehmen(m);
 
-			mv.zeigeMedien();
+			mv.zeigeMedien(System.out);
 			System.out.printf("Durchschnittliches Alter: %.1f%nNeustes Medium: ", mv.berechneErscheinungsjahr());
 			Medium m = mv.sucheNeuesMedium();
 			if (m != null)
-				m.druckeDaten();
+				m.druckeDaten(System.out);
 		}
 	}
 

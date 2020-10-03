@@ -1,5 +1,7 @@
 package de.wlad;
 
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.Objects;
 
 public class Bild extends Medium {
@@ -9,16 +11,17 @@ public class Bild extends Medium {
 		super(titel, jahr);
 		this.ort = ort;
 	}
-	
+
 	public String getOrt() {
 		return ort;
 	}
-	
+
 	@Override
-	public void druckeDaten() {
-		System.out.printf("ID = %d \"%s\" aufgenommen im Jahr %d in %s%n", getId(), getTitel(), getJahr(), getOrt());
+	public void druckeDaten(OutputStream os) {
+		new PrintStream(os).printf("ID = %d \"%s\" aufgenommen im Jahr %d in %s%n", getId(), getTitel(), getJahr(),
+				getOrt());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		return super.hashCode() + 7 * Objects.hashCode(ort);

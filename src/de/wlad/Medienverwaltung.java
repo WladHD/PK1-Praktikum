@@ -1,5 +1,6 @@
 package de.wlad;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -9,13 +10,14 @@ public class Medienverwaltung {
 
 	public void aufnehmen(Medium m) {
 		medien.add(m);
+		System.out.println("Medium aufgenommen: " + medien.size());
 	}
 
-	public void zeigeMedien() {
+	public void zeigeMedien(OutputStream os) {
 		Collections.sort(medien);
 		
 		for (Medium m : medien)
-			m.druckeDaten();
+			m.druckeDaten(os);
 	}
 
 	public Medium sucheNeuesMedium() {

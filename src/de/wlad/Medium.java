@@ -1,5 +1,6 @@
 package de.wlad;
 
+import java.io.OutputStream;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -19,7 +20,7 @@ public abstract class Medium implements Comparable<Medium> {
 		return LocalDate.now().getYear() - jahr;
 	}
 	
-	public abstract void druckeDaten();
+	public abstract void druckeDaten(OutputStream os);
 	
 	public int getId() {
 		return id;

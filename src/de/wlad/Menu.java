@@ -1,13 +1,16 @@
 package de.wlad;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 public class Menu {
 
-	private String[] options = { "Audio aufnehmen", "Bild aufnehmen", "Zeige alle Medien", "Zeige neues Medium",
-			"Berechne durchschnittliches Erscheinungsjahr", "Beenden" };
+	private String[] options = { "Audio aufnehmen", "Bild aufnehmen", "Zeige alle Medien",
+			"Medienliste in Datei schreiben", "Zeige neues Medium", "Berechne durchschnittliches Erscheinungsjahr",
+			"Beenden" };
 	private Scanner sc = new Scanner(System.in);
 	private Medienverwaltung mv = new Medienverwaltung();
 
@@ -21,15 +24,22 @@ public class Menu {
 	}
 
 	public void startListening() {
-		printMenu();
-		int parsed = 0;
+		startListening(-1);
+	}
 
-		try {
-			parsed = Integer.parseInt(sc.next());
-		} catch (Exception e) {
-			System.out.println("Ungültige Eingabe.");
-			startListening();
-			return;
+	public void startListening(int preselect) {
+		int parsed = preselect;
+
+		if (parsed == -1) {
+			printMenu();
+
+			try {
+				parsed = Integer.parseInt(sc.next());
+			} catch (Exception e) {
+				System.out.println("Ungültige Eingabe.");
+				startListening();
+				return;
+			}
 		}
 
 		try {
@@ -41,21 +51,24 @@ public class Menu {
 				aufnehmenBild();
 				break;
 			case 3:
-				mv.zeigeMedien();
+				mv.zeigeMedien(System.out);
 				break;
 			case 4:
+				druckeDatenInDatei();
+				break;
+			case 5:
 				System.out.print("Neustes Medium: ");
 				Medium m = mv.sucheNeuesMedium();
 				if (m == null) {
 					System.out.println("-");
 					break;
 				}
-				m.druckeDaten();
-				break;
-			case 5:
-				System.out.printf("Durchschnittliches Alter: %.1f%nNeustes Medium: ", mv.berechneErscheinungsjahr());
+				m.druckeDaten(System.out);
 				break;
 			case 6:
+				System.out.printf("Durchschnittliches Alter: %.1f%nNeustes Medium: ", mv.berechneErscheinungsjahr());
+				break;
+			case 7:
 				return;
 			default:
 				System.out.println("Ungültige Eingabe.");
@@ -63,9 +76,35 @@ public class Menu {
 			}
 		} catch (InputAbortException e) {
 			System.out.println("Aufnahme abgebrochen.");
+		} catch (EmptyFilenameException e) {
+			if (JOptionPane.showConfirmDialog(null, "Der Dateiname darf nicht leer sein. Wiederholen?") == 0)
+				startListening(4);
 		}
 
 		startListening();
+	}
+
+	public void druckeDatenInDatei() throws InputAbortException, EmptyFilenameException {
+		String s = JOptionPane.showInputDialog("Dateipfad eingeben.");
+
+		if (s == null)
+			throw new InputAbortException();
+
+		if (s.replaceAll(" ", "").length() == 0)
+			throw new EmptyFilenameException();
+
+		File f = new File(s);
+
+		if (!f.isFile()) {
+			druckeDatenInDatei();
+			return;
+		}
+
+		try (FileOutputStream fos = new FileOutputStream(new File(s))) {
+			mv.zeigeMedien(fos);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void aufnehmenAudio() throws InputAbortException {

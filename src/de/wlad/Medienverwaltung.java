@@ -42,9 +42,7 @@ public class Medienverwaltung {
 
 	public void zeigeMedien(OutputStream os) {
 		Collections.sort(medien);
-
-		for (Medium m : medien)
-			m.druckeDaten(os);
+		medien.stream().forEach(m -> m.druckeDaten(os));
 	}
 
 	public List<Medium> getMediumList() {

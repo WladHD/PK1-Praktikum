@@ -60,12 +60,14 @@ public class Medienverwaltung {
 		Medium.setGlobalId(list.size() == 0 ? 0 : list.stream().map(i -> i.getId()).max(Integer::compare).get() + 1);
 	}
 
+	// Praktikum 12 Aufgaben bereits am Anfang umgesetzt
 	public Medium sucheNeuesMedium() {
 		if (medien.size() == 0)
 			return null;
 		return medien.stream().min((a, b) -> a.alter() - b.alter()).get();
 	}
 
+	// Praktikum 12 Aufgaben bereits am Anfang umgesetzt
 	public double berechneErscheinungsjahr() {
 		final int size = medien.size();
 		if (size == 0)
